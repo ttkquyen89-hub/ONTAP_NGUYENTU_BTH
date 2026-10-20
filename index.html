@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PHIẾU BÀI TẬP TƯƠNG TÁC HÓA HỌC 8 - CÂN BẰNG VÀ TÍNH THEO PTHH</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Times+New+Roman&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f1f5f9;
+            font-family: 'Times New Roman', Times, serif;
+            color: #0f172a;
+        }
+        .ui-font {
+            font-family: 'Inter', sans-serif;
+        }
+        .worksheet-page {
+            background: white;
+            width: 98%;
+            max-width: 100%;
+            margin: 1rem auto;
+            padding: 2rem 2.5rem;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+            border: 1px solid #cbd5e1;
+            position: relative;
+        }
+        .ws-input-inline {
+            border: none;
+            border-bottom: 1.5px dotted #334155;
+            background-color: #f8fafc;
+            padding: 2px 8px;
+            font-family: 'Times New Roman', Times, serif;
+            font-size: 1.05rem;
+            color: #0f172a;
+            outline: none;
+            transition: all 0.2s;
+        }
+        .ws-input-inline:focus {
+            background-color: #e0f2fe;
+            border-bottom: 1.5px solid #0284c7;
+        }
+        .coef-select {
+            min-width: 42px;
+            height: 32px;
+            border: 1.5px dashed #64748b;
+            background-color: #f8fafc;
+            text-align: center;
+            text-align-last: center;
+            font-family: 'Times New Roman', Times, serif;
+            font-weight: bold;
+            font-size: 1.1rem;
+            border-radius: 6px;
+            margin-right: 3px;
+            padding: 0 2px;
+            outline: none;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .coef-select:focus {
+            background-color: #e0f2fe;
+            border-color: #0284c7;
+            border-style: solid;
+            box-shadow: 0 0 0 2px rgba(2, 132, 199, 0.2);
+        }
+        .p2-select {
+            border: none;
+            border-bottom: 1.5px dashed #475569;
+            background-color: #f8fafc;
+            padding: 2px 8px;
+            font-family: 'Times New Roman', Times, serif;
+            font-size: 1.05rem;
+            font-weight: 600;
+            color: #0f172a;
+            border-radius: 4px;
+            outline: none;
+            cursor: pointer;
+            transition: all 0.15s;
+            text-align: center;
+            text-align-last: center;
+        }
+        .p2-select:hover {
+            background-color: #f1f5f9;
+            border-bottom-color: #0284c7;
+        }
+        .p2-select:focus {
+            background-color: #e0f2fe;
+            border-bottom: 1.5px solid #0284c7;
+        }
+        .pthh-grid {
+            display: inline-grid;
+            align-items: center;
+            justify-items: center;
+            row-gap: 6px;
+            column-gap: 12px;
+            padding: 12px 20px;
+            background-color: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-left: 4px solid #0284c7;
+            border-radius: 6px;
+            margin: 8px 0;
+            white-space: nowrap;
+        }
+        .correct-box {
+            background-color: #dcfce7 !important;
+            border-color: #16a34a !important;
+            border-style: solid !important;
+            color: #15803d !important;
+        }
+        .incorrect-box {
+            background-color: #fee2e2 !important;
+            border-color: #dc2626 !important;
+            border-style: solid !important;
+            color: #b91c1c !important;
+        }
+        .eq-card {
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 12px 16px;
+            background-color: #ffffff;
+            transition: all 0.2s;
+        }
+        .eq-card:hover {
+            border-color: #cbd5e1;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+        }
+        @media print {
+            .no-print {
+                display: none !important;
+            }
+            body {
+                background: white;
+            }
+            .worksheet-page {
+                box-shadow: none;
+                border: none;
+                margin: 0;
+                padding: 0.8cm;
+                width: 100%;
+                max-width: 100%;
+            }
+            .ws-input-inline {
+                background-color: transparent !important;
+                border-color: #000 !important;
+            }
+            .coef-select, .p2-select {
+                background-color: transparent !important;
+                border-bottom: 1px dotted #000 !important;
+                appearance: none;
+                -webkit-appearance: none;
+            }
+            .problem-block {
+                page-break-inside: avoid;
+            }
+        }
+    </style>
+</head>
+<body class="pb-16">
+
+    <header class="no-print sticky top-0 z-50 bg-slate-900 text-white shadow-md border-b border-slate-700 ui-font">
+        <div class="max-w-[1700px] mx-auto px-6 py-3 flex flex-wrap items-center justify-between gap-3">
+            <div class="flex items-center gap-3">
+                <span class="bg-indigo-500 text-white font-bold px-2.5 py-1 rounded text-xs uppercase tracking-wider">HÓA HỌC 8</span>
+                <h1 class="font-bold text-base sm:text-lg md:text-xl">Phiếu Bài Tập Tương Tác: Cân Bằng & Tính Theo PTHH</h1>
+            </div>
+            <div class="flex flex-wrap items-center gap-2">
+                <button onclick="checkAllAnswers()" class="bg-emerald-600 hover:bg-emerald-500 text-white text-sm font-medium px-4 py-2 rounded-lg transition flex items-center gap-1.5 shadow-sm">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                    Kiểm tra đáp án
+                </button>
+                <button onclick="fillSampleSolutions()" class="bg-amber-600 hover:bg-amber-500 text-white text-sm font-medium px-4 py-2 rounded-lg transition flex items-center gap-1.5 shadow-sm">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    Điền lời giải mẫu
+                </button>
+                <button onclick="resetWorksheet()" class="bg-slate-700 hover:bg-slate-600 text-white text-sm font-medium px-4 py-2 rounded-lg transition flex items-center gap-1.5">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
+                    Làm lại
+                </button>
+                <button onclick="window.print()" class="bg-sky-600 hover:bg-sky-500 text-white text-sm font-medium px-4 py-2 rounded-lg transition flex items-center gap-1.5">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>
+                    In phiếu
+                </button>
+            </div>
+        </div>
+        <div id="status-banner" class="hidden bg-slate-800 border-t border-slate-700 px-6 py-2.5 text-center text-sm"></div>
+    </header>
+
+    <main class="worksheet-page text-[18px] leading-relaxed">
+        <div class="text-center border-b-2 border-slate-800 pb-4 mb-6">
+            <h2 class="font-bold text-2xl md:text-3xl tracking-wide uppercase">PHIẾU BÀI TẬP HÓA HỌC 8</h2>
+            <p class="font-bold text-lg md:text-xl mt-1 text-slate-800">Chủ đề: Cân bằng phương trình hóa học và tính theo phương trình hóa học</p>
+        </div>
+
+        <div class="mb-8 space-y-2.5 text-[17.5px]">
+            <div class="flex flex-wrap items-baseline gap-2">
+                <span class="font-semibold">Họ và tên:</span>
+                <input type="text" class="ws-input-inline flex-1 min-w-[280px]" placeholder="................................................................................">
+            </div>
+            <div class="flex flex-wrap items-baseline gap-8">
+                <div class="flex items-baseline gap-2 flex-1 min-w-[200px]">
+                    <span class="font-semibold">Lớp:</span>
+                    <input type="text" class="ws-input-inline w-48" placeholder="....................">
+                </div>
+                <div class="flex items-baseline gap-2">
+                    <span class="font-semibold">Ngày:</span>
+                    <input type="text" class="ws-input-inline w-14 text-center" placeholder="......"> /
+                    <input type="text" class="ws-input-inline w-14 text-center" placeholder="......"> /
+                    <input type="text" class="ws-input-inline w-24 text-center" placeholder="..........">
+                </div>
+            </div>
+        </div>
+
+        <section class="mb-10">
+            <h3 class="font-bold text-xl mb-1.5 uppercase text-slate-900">Phần I. Cân bằng phương trình hóa học (15 câu)</h3>
+            <p class="italic mb-2 text-[17.5px]">
+                <span class="font-bold not-italic">Yêu cầu:</span> Hoàn thành và cân bằng các sơ đồ phản ứng sau bằng cách đặt hệ số thích hợp trước các công thức hóa học.
+            </p>
+            <p class="no-print text-xs ui-font text-slate-500 mb-5">
+                * Hướng dẫn: Nhấp vào từng ô trống trước công thức hóa học để chọn hệ số thích hợp (2, 3, 4, 5, 6). <strong>Nếu hệ số là 1 thì để trống (không điền)</strong>.
+            </p>
+
+            <div id="equations-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 text-[18px]">
+            </div>
+        </section>
+
+        <section>
+            <h3 class="font-bold text-xl mb-1.5 uppercase text-slate-900">Phần II. Bài tập tính theo phương trình hóa học (5 bài)</h3>
+            <p class="mb-6 text-[17.5px] bg-slate-50 p-4 rounded-lg border border-slate-200">
+                <span class="font-bold">Yêu cầu chung:</span> Viết phương trình hóa học, cân bằng phương trình, tính số mol chất đã biết, dựa vào tỉ lệ mol trong phương trình để tính đại lượng cần tìm. Các thể tích khí được tính ở điều kiện chuẩn với thể tích mol khí <strong>24,79 L/mol</strong>.
+            </p>
+
+            <div id="problems-container" class="space-y-8">
+            </div>
+        </section>
+    </main>
+
+    <script>
+        const equationsData = [
+            { id: 1, left: ['Mg', 'O<sub>2</sub>'], right: ['MgO'], ans: ['2', '', '2'] },
+            { id: 2, left: ['Al', 'O<sub>2</sub>'], right: ['Al<sub>2</sub>O<sub>3</sub>'], ans: ['4', '3', '2'] },
+            { id: 3, left: ['Fe', 'O<sub>2</sub>'], right: ['Fe<sub>3</sub>O<sub>4</sub>'], ans: ['3', '2', ''] },
+            { id: 4, left: ['H<sub>2</sub>', 'O<sub>2</sub>'], right: ['H<sub>2</sub>O'], ans: ['2', '', '2'] },
+            { id: 5, left: ['P', 'O<sub>2</sub>'], right: ['P<sub>2</sub>O<sub>5</sub>'], ans: ['4', '5', '2'] },
+            { id: 6, left: ['KClO<sub>3</sub>'], right: ['KCl', 'O<sub>2</sub>'], ans: ['2', '2', '3'] },
+            { id: 7, left: ['KMnO<sub>4</sub>'], right: ['K<sub>2</sub>MnO<sub>4</sub>', 'MnO<sub>2</sub>', 'O<sub>2</sub>'], ans: ['2', '', '', ''] },
+            { id: 8, left: ['Zn', 'HCl'], right: ['ZnCl<sub>2</sub>', 'H<sub>2</sub>'], ans: ['', '2', '', ''] },
+            { id: 9, left: ['Fe', 'HCl'], right: ['FeCl<sub>2</sub>', 'H<sub>2</sub>'], ans: ['', '2', '', ''] },
+            { id: 10, left: ['Al', 'HCl'], right: ['AlCl<sub>3</sub>', 'H<sub>2</sub>'], ans: ['2', '6', '2', '3'] },
+            { id: 11, left: ['NaOH', 'H<sub>2</sub>SO<sub>4</sub>'], right: ['Na<sub>2</sub>SO<sub>4</sub>', 'H<sub>2</sub>O'], ans: ['2', '', '', '2'] },
+            { id: 12, left: ['CaO', 'H<sub>2</sub>O'], right: ['Ca(OH)<sub>2</sub>'], ans: ['', '', ''] },
+            { id: 13, left: ['CuO', 'H<sub>2</sub>'], right: ['Cu', 'H<sub>2</sub>O'], ans: ['', '', '', ''] },
+            { id: 14, left: ['Fe<sub>2</sub>O<sub>3</sub>', 'CO'], right: ['Fe', 'CO<sub>2</sub>'], ans: ['', '3', '2', '3'] },
+            { id: 15, left: ['Na<sub>2</sub>CO<sub>3</sub>', 'HCl'], right: ['NaCl', 'CO<sub>2</sub>', 'H<sub>2</sub>O'], ans: ['', '2', '2', '', ''] }
+        ];
+
+        const problemsData = [
+            {
+                id: 1,
+                title: 'Bài 1.',
+                desc: 'Đốt cháy hoàn toàn 12 g magnesium (Mg) trong oxygen, thu được magnesium oxide (MgO).',
+                questions: ['a) Viết phương trình hóa học.', 'b) Tính khối lượng MgO thu được.', 'c) Tính thể tích khí oxygen đã phản ứng ở điều kiện chuẩn.'],
+                given: 'Cho: Mg = 24; O = 16.',
+                molKnown: {
+                    sym: 'n<sub>Mg</sub>',
+                    fOpts: ['m / M', 'n . M', 'V / 24,79'],
+                    fAns: 'm / M',
+                    subOpts: ['12 / 24', '24 / 12', '12 . 24'],
+                    subAns: '12 / 24',
+                    valOpts: ['0,25', '0,5', '1'],
+                    valAns: '0,5'
+                },
+                stoichCols: [
+                    { formula: '2Mg', coefAns: '2', molOpts: ['0,25', '0,5', '1'], molAns: '0,5' },
+                    { isOp: true, text: '+' },
+                    { formula: 'O<sub>2</sub>', coefAns: '1', molOpts: ['0,25', '0,5', '0,75'], molAns: '0,25' },
+                    { isOp: true, text: '→' },
+                    { formula: '2MgO', coefAns: '2', molOpts: ['0,25', '0,5', '1'], molAns: '0,5' }
+                ],
+                finalSteps: [
+                    {
+                        key: 'b',
+                        sym: 'm<sub>MgO</sub>',
+                        fOpts: ['n . M', 'm / M', 'n . 24,79'],
+                        fAns: 'n . M',
+                        subOpts: ['0,5 . 40', '0,25 . 40', '0,5 / 40'],
+                        subAns: '0,5 . 40',
+                        valOpts: ['10', '20', '40'],
+                        valAns: '20',
+                        unit: '(g)'
+                    },
+                    {
+                        key: 'c',
+                        sym: 'V<sub>O₂</sub>',
+                        fOpts: ['n . 24,79', 'n . M', 'V / 24,79'],
+                        fAns: 'n . 24,79',
+                        subOpts: ['0,25 . 24,79', '0,5 . 24,79', '0,25 . 32'],
+                        subAns: '0,25 . 24,79',
+                        valOpts: ['6,1975', '12,395', '8'],
+                        valAns: '6,1975',
+                        unit: '(L)'
+                    }
+                ]
+            },
+            {
+                id: 2,
+                title: 'Bài 2.',
+                desc: 'Cho 13 g zinc (Zn) tác dụng vừa đủ với dung dịch hydrochloric acid (HCl), thu được zinc chloride (ZnCl₂) và khí hydrogen.',
+                questions: ['a) Viết phương trình hóa học.', 'b) Tính số mol khí hydrogen thu được.', 'c) Tính thể tích khí hydrogen ở điều kiện chuẩn.'],
+                given: 'Cho: Zn = 65.',
+                molKnown: {
+                    sym: 'n<sub>Zn</sub>',
+                    fOpts: ['m / M', 'n . M', 'V / 24,79'],
+                    fAns: 'm / M',
+                    subOpts: ['13 / 65', '65 / 13', '13 . 65'],
+                    subAns: '13 / 65',
+                    valOpts: ['0,1', '0,2', '0,4'],
+                    valAns: '0,2'
+                },
+                stoichCols: [
+                    { formula: 'Zn', coefAns: '1', molOpts: ['0,1', '0,2', '0,4'], molAns: '0,2' },
+                    { isOp: true, text: '+' },
+                    { formula: '2HCl', coefAns: '2', molOpts: ['0,2', '0,4', '0,6'], molAns: '0,4' },
+                    { isOp: true, text: '→' },
+                    { formula: 'ZnCl<sub>2</sub>', coefAns: '1', molOpts: ['0,1', '0,2', '0,4'], molAns: '0,2' },
+                    { isOp: true, text: '+' },
+                    { formula: 'H<sub>2</sub>', coefAns: '1', molOpts: ['0,1', '0,2', '0,4'], molAns: '0,2' }
+                ],
+                finalSteps: [
+                    {
+                        key: 'b',
+                        sym: 'n<sub>H₂</sub>',
+                        fOpts: ['(0,2 . 1) / 1', '(0,2 . 2) / 1', '0,2 . 2'],
+                        fAns: '(0,2 . 1) / 1',
+                        valOpts: ['0,1', '0,2', '0,4'],
+                        valAns: '0,2',
+                        unit: '(mol)'
+                    },
+                    {
+                        key: 'c',
+                        sym: 'V<sub>H₂</sub>',
+                        fOpts: ['n . 24,79', 'n . M', 'V / 24,79'],
+                        fAns: 'n . 24,79',
+                        subOpts: ['0,2 . 24,79', '0,4 . 24,79', '0,2 . 2'],
+                        subAns: '0,2 . 24,79',
+                        valOpts: ['2,479', '4,958', '9,916'],
+                        valAns: '4,958',
+                        unit: '(L)'
+                    }
+                ]
+            },
+            {
+                id: 3,
+                title: 'Bài 3.',
+                desc: 'Nhiệt phân hoàn toàn 24,5 g potassium chlorate (KClO₃), thu được potassium chloride (KCl) và khí oxygen.',
+                questions: ['a) Viết phương trình hóa học.', 'b) Tính số mol oxygen thu được.', 'c) Tính thể tích khí oxygen ở điều kiện chuẩn.'],
+                given: 'Cho: K = 39; Cl = 35,5; O = 16.',
+                molKnown: {
+                    sym: 'n<sub>KClO₃</sub>',
+                    fOpts: ['m / M', 'n . M', 'V / 24,79'],
+                    fAns: 'm / M',
+                    subOpts: ['24,5 / 122,5', '122,5 / 24,5', '24,5 . 122,5'],
+                    subAns: '24,5 / 122,5',
+                    valOpts: ['0,1', '0,2', '0,3'],
+                    valAns: '0,2'
+                },
+                stoichCols: [
+                    { formula: '2KClO<sub>3</sub>', coefAns: '2', molOpts: ['0,1', '0,2', '0,3'], molAns: '0,2' },
+                    { isOp: true, text: '→' },
+                    { formula: '2KCl', coefAns: '2', molOpts: ['0,1', '0,2', '0,3'], molAns: '0,2' },
+                    { isOp: true, text: '+' },
+                    { formula: '3O<sub>2</sub>', coefAns: '3', molOpts: ['0,2', '0,3', '0,6'], molAns: '0,3' }
+                ],
+                finalSteps: [
+                    {
+                        key: 'b',
+                        sym: 'n<sub>O₂</sub>',
+                        fOpts: ['(0,2 . 3) / 2', '(0,2 . 2) / 3', '0,2 . 3'],
+                        fAns: '(0,2 . 3) / 2',
+                        valOpts: ['0,2', '0,3', '0,6'],
+                        valAns: '0,3',
+                        unit: '(mol)'
+                    },
+                    {
+                        key: 'c',
+                        sym: 'V<sub>O₂</sub>',
+                        fOpts: ['n . 24,79', 'n . M', 'V / 24,79'],
+                        fAns: 'n . 24,79',
+                        subOpts: ['0,3 . 24,79', '0,2 . 24,79', '0,3 . 32'],
+                        subAns: '0,3 . 24,79',
+                        valOpts: ['4,958', '7,437', '9,6'],
+                        valAns: '7,437',
+                        unit: '(L)'
+                    }
+                ]
+            },
+            {
+                id: 4,
+                title: 'Bài 4.',
+                desc: 'Cho iron (Fe) tác dụng hoàn toàn với dung dịch hydrochloric acid (HCl), thu được 4,958 lít khí hydrogen ở điều kiện chuẩn.',
+                questions: ['a) Viết phương trình hóa học.', 'b) Tính số mol iron đã phản ứng.', 'c) Tính khối lượng iron đã phản ứng.'],
+                given: 'Cho: Fe = 56.',
+                molKnown: {
+                    sym: 'n<sub>H₂</sub>',
+                    fOpts: ['V / 24,79', 'm / M', 'n . 24,79'],
+                    fAns: 'V / 24,79',
+                    subOpts: ['4,958 / 24,79', '24,79 / 4,958', '4,958 . 24,79'],
+                    subAns: '4,958 / 24,79',
+                    valOpts: ['0,1', '0,2', '0,4'],
+                    valAns: '0,2'
+                },
+                stoichCols: [
+                    { formula: 'Fe', coefAns: '1', molOpts: ['0,1', '0,2', '0,4'], molAns: '0,2' },
+                    { isOp: true, text: '+' },
+                    { formula: '2HCl', coefAns: '2', molOpts: ['0,2', '0,4', '0,6'], molAns: '0,4' },
+                    { isOp: true, text: '→' },
+                    { formula: 'FeCl<sub>2</sub>', coefAns: '1', molOpts: ['0,1', '0,2', '0,4'], molAns: '0,2' },
+                    { isOp: true, text: '+' },
+                    { formula: 'H<sub>2</sub>', coefAns: '1', molOpts: ['0,1', '0,2', '0,4'], molAns: '0,2' }
+                ],
+                finalSteps: [
+                    {
+                        key: 'b',
+                        sym: 'n<sub>Fe</sub>',
+                        fOpts: ['(0,2 . 1) / 1', '(0,2 . 2) / 1', '0,2 . 56'],
+                        fAns: '(0,2 . 1) / 1',
+                        valOpts: ['0,1', '0,2', '0,4'],
+                        valAns: '0,2',
+                        unit: '(mol)'
+                    },
+                    {
+                        key: 'c',
+                        sym: 'm<sub>Fe</sub>',
+                        fOpts: ['n . M', 'm / M', 'n . 24,79'],
+                        fAns: 'n . M',
+                        subOpts: ['0,2 . 56', '0,4 . 56', '0,2 / 56'],
+                        subAns: '0,2 . 56',
+                        valOpts: ['5,6', '11,2', '22,4'],
+                        valAns: '11,2',
+                        unit: '(g)'
+                    }
+                ]
+            },
+            {
+                id: 5,
+                title: 'Bài 5.',
+                desc: 'Dùng carbon monoxide (CO) khử hoàn toàn 16 g iron(III) oxide (Fe₂O₃) ở nhiệt độ cao, thu được iron (Fe) và carbon dioxide (CO₂).',
+                questions: ['a) Viết phương trình hóa học.', 'b) Tính khối lượng iron thu được.', 'c) Tính thể tích khí CO đã tham gia phản ứng ở điều kiện chuẩn.'],
+                given: 'Cho: Fe = 56; O = 16; C = 12.',
+                molKnown: {
+                    sym: 'n<sub>Fe₂O₃</sub>',
+                    fOpts: ['m / M', 'n . M', 'V / 24,79'],
+                    fAns: 'm / M',
+                    subOpts: ['16 / 160', '160 / 16', '16 . 160'],
+                    subAns: '16 / 160',
+                    valOpts: ['0,1', '0,2', '0,3'],
+                    valAns: '0,1'
+                },
+                stoichCols: [
+                    { formula: 'Fe<sub>2</sub>O<sub>3</sub>', coefAns: '1', molOpts: ['0,1', '0,2', '0,3'], molAns: '0,1' },
+                    { isOp: true, text: '+' },
+                    { formula: '3CO', coefAns: '3', molOpts: ['0,1', '0,2', '0,3'], molAns: '0,3' },
+                    { isOp: true, text: '→' },
+                    { formula: '2Fe', coefAns: '2', molOpts: ['0,1', '0,2', '0,3'], molAns: '0,2' },
+                    { isOp: true, text: '+' },
+                    { formula: '3CO<sub>2</sub>', coefAns: '3', molOpts: ['0,1', '0,2', '0,3'], molAns: '0,3' }
+                ],
+                finalSteps: [
+                    {
+                        key: 'b',
+                        sym: 'm<sub>Fe</sub>',
+                        fOpts: ['n . M', 'm / M', 'n . 24,79'],
+                        fAns: 'n . M',
+                        subOpts: ['0,2 . 56', '0,1 . 56', '0,3 . 56'],
+                        subAns: '0,2 . 56',
+                        valOpts: ['5,6', '11,2', '16,8'],
+                        valAns: '11,2',
+                        unit: '(g)'
+                    },
+                    {
+                        key: 'c',
+                        sym: 'V<sub>CO</sub>',
+                        fOpts: ['n . 24,79', 'n . M', 'V / 24,79'],
+                        fAns: 'n . 24,79',
+                        subOpts: ['0,3 . 24,79', '0,1 . 24,79', '0,2 . 24,79'],
+                        subAns: '0,3 . 24,79',
+                        valOpts: ['2,479', '4,958', '7,437'],
+                        valAns: '7,437',
+                        unit: '(L)'
+                    }
+                ]
+            }
+        ];
+
+        function renderEquations() {
+            const container = document.getElementById('equations-container');
+            container.innerHTML = '';
+
+            const buildSelectHTML = (inputId) => `
+                <select id="${inputId}" class="coef-select" title="Chọn hệ số (để trống nếu hệ số là 1)">
+                    <option value=""></option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                </select>
+            `;
+
+            equationsData.forEach((eq) => {
+                let termIdx = 0;
+                const leftHTML = eq.left.map((formula) => {
+                    const inputId = `eq_${eq.id}_${termIdx++}`;
+                    return `<span class="inline-flex items-center">${buildSelectHTML(inputId)}<span>${formula}</span></span>`;
+                }).join(' <span class="mx-1 font-bold">+</span> ');
+
+                const rightHTML = eq.right.map((formula) => {
+                    const inputId = `eq_${eq.id}_${termIdx++}`;
+                    return `<span class="inline-flex items-center">${buildSelectHTML(inputId)}<span>${formula}</span></span>`;
+                }).join(' <span class="mx-1 font-bold">+</span> ');
+
+                const card = document.createElement('div');
+                card.id = `eq_card_${eq.id}`;
+                card.className = 'eq-card flex flex-wrap items-center gap-y-2';
+                if (eq.id === 7 || eq.id === 15) {
+                    card.classList.add('md:col-span-2');
+                }
+                card.innerHTML = `
+                    <span class="font-bold mr-2 text-slate-700 w-6">${eq.id}.</span>
+                    <div class="flex flex-wrap items-center gap-y-1.5 flex-1">
+                        ${leftHTML}
+                        <span class="mx-2 font-bold text-lg">→</span>
+                        ${rightHTML}
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function buildDropdown(id, options, placeholder = '...') {
+            const optsHTML = options.map(o => `<option value="${o}">${o}</option>`).join('');
+            return `
+                <select id="${id}" class="p2-select">
+                    <option value="">${placeholder}</option>
+                    ${optsHTML}
+                </select>
+            `;
+        }
+
+        function renderProblems() {
+            const container = document.getElementById('problems-container');
+            container.innerHTML = '';
+
+            problemsData.forEach((prob) => {
+                const molKnownHTML = `
+                    <div class="flex flex-wrap items-center gap-2">
+                        <span class="font-bold">${prob.molKnown.sym} =</span>
+                        ${buildDropdown(`b${prob.id}_n_f`, prob.molKnown.fOpts, 'công thức')}
+                        <span>=</span>
+                        ${buildDropdown(`b${prob.id}_n_sub`, prob.molKnown.subOpts, 'thế số')}
+                        <span>=</span>
+                        ${buildDropdown(`b${prob.id}_n_val`, prob.molKnown.valOpts, '...')}
+                        <span>(mol)</span>
+                    </div>
+                `;
+
+                const colCount = prob.stoichCols.length;
+                let rowFormula = '';
+                let rowRatio = '';
+                let rowMol = '';
+
+                prob.stoichCols.forEach((col, idx) => {
+                    if (col.isOp) {
+                        rowFormula += `<div class="font-bold text-slate-500 px-1 text-center">${col.text}</div>`;
+                        rowRatio += `<div class="text-slate-400 text-center"></div>`;
+                        rowMol += `<div class="text-slate-400 text-center"></div>`;
+                    } else {
+                        rowFormula += `<div class="font-bold text-slate-900 px-2 text-center">${col.formula}</div>`;
+                        rowRatio += `<div class="text-center">${buildDropdown(`b${prob.id}_coef_${idx}`, ['1', '2', '3', '4', '5', '6'], 'tỉ lệ')}</div>`;
+                        rowMol += `<div class="text-center">${buildDropdown(`b${prob.id}_mol_${idx}`, col.molOpts, 'số mol')}</div>`;
+                    }
+                });
+
+                const stoichGridHTML = `
+                    <div class="overflow-x-auto my-2">
+                        <div class="pthh-grid" style="grid-template-columns: repeat(${colCount}, minmax(0, 1fr));">
+                            ${rowFormula}
+                            ${rowRatio}
+                            ${rowMol}
+                        </div>
+                    </div>
+                `;
+
+                const finalStepsHTML = prob.finalSteps.map((step) => {
+                    const subPart = step.subOpts
+                        ? `<span>=</span> ${buildDropdown(`b${prob.id}_${step.key}_sub`, step.subOpts, 'thế số')}`
+                        : '';
+                    return `
+                        <div class="flex flex-wrap items-center gap-2 mt-2">
+                            <span class="font-bold">${step.sym} =</span>
+                            ${buildDropdown(`b${prob.id}_${step.key}_f`, step.fOpts, 'công thức')}
+                            ${subPart}
+                            <span>=</span>
+                            ${buildDropdown(`b${prob.id}_${step.key}_val`, step.valOpts, '...')}
+                            <span>${step.unit}</span>
+                        </div>
+                    `;
+                }).join('');
+
+                const block = document.createElement('div');
+                block.className = 'problem-block border border-slate-300 rounded-xl p-5 bg-white shadow-sm';
+                block.innerHTML = `
+                    <div class="mb-3">
+                        <p class="font-bold text-lg">${prob.title} <span class="font-normal">${prob.desc}</span></p>
+                        <p class="text-[17px] text-slate-700 mt-1">
+                            ${prob.questions.join(' &nbsp;|&nbsp; ')} &nbsp; <span class="italic">(${prob.given})</span>
+                        </p>
+                    </div>
+
+                    <div class="pl-4 border-l-3 border-indigo-500 space-y-3 text-[17.5px]">
+                        ${molKnownHTML}
+                        ${stoichGridHTML}
+                        ${finalStepsHTML}
+                    </div>
+                `;
+                container.appendChild(block);
+            });
+        }
+
+        function validateSelect(id, expected) {
+            const el = document.getElementById(id);
+            if (!el) return false;
+            el.classList.remove('correct-box', 'incorrect-box');
+            if (el.value === expected && el.value !== '') {
+                el.classList.add('correct-box');
+                return true;
+            } else {
+                el.classList.add('incorrect-box');
+                return false;
+            }
+        }
+
+        function checkAllAnswers() {
+            let correctEqCount = 0;
+
+            equationsData.forEach((eq) => {
+                let isEqCorrect = true;
+                let hasAnySelection = false;
+
+                eq.ans.forEach((val, idx) => {
+                    const selectEl = document.getElementById(`eq_${eq.id}_${idx}`);
+                    if (selectEl.value !== '') hasAnySelection = true;
+                });
+
+                eq.ans.forEach((expectedVal, idx) => {
+                    const selectEl = document.getElementById(`eq_${eq.id}_${idx}`);
+                    selectEl.classList.remove('correct-box', 'incorrect-box');
+
+                    if (!hasAnySelection && eq.ans.some(x => x !== '')) {
+                        selectEl.classList.add('incorrect-box');
+                        isEqCorrect = false;
+                    } else if (selectEl.value === expectedVal) {
+                        selectEl.classList.add('correct-box');
+                    } else {
+                        selectEl.classList.add('incorrect-box');
+                        isEqCorrect = false;
+                    }
+                });
+
+                if (isEqCorrect) correctEqCount++;
+            });
+
+            let correctPart2Items = 0;
+            let totalPart2Items = 0;
+
+            problemsData.forEach((prob) => {
+                totalPart2Items += 3;
+                if (validateSelect(`b${prob.id}_n_f`, prob.molKnown.fAns)) correctPart2Items++;
+                if (validateSelect(`b${prob.id}_n_sub`, prob.molKnown.subAns)) correctPart2Items++;
+                if (validateSelect(`b${prob.id}_n_val`, prob.molKnown.valAns)) correctPart2Items++;
+
+                prob.stoichCols.forEach((col, idx) => {
+                    if (!col.isOp) {
+                        totalPart2Items += 2;
+                        if (validateSelect(`b${prob.id}_coef_${idx}`, col.coefAns)) correctPart2Items++;
+                        if (validateSelect(`b${prob.id}_mol_${idx}`, col.molAns)) correctPart2Items++;
+                    }
+                });
+
+                prob.finalSteps.forEach((step) => {
+                    totalPart2Items++;
+                    if (validateSelect(`b${prob.id}_${step.key}_f`, step.fAns)) correctPart2Items++;
+                    if (step.subOpts) {
+                        totalPart2Items++;
+                        if (validateSelect(`b${prob.id}_${step.key}_sub`, step.subAns)) correctPart2Items++;
+                    }
+                    totalPart2Items++;
+                    if (validateSelect(`b${prob.id}_${step.key}_val`, step.valAns)) correctPart2Items++;
+                });
+            });
+
+            const banner = document.getElementById('status-banner');
+            banner.classList.remove('hidden');
+            banner.innerHTML = `
+                Kết quả chấm điểm: 
+                <strong>Phần I (Cân bằng PTHH):</strong> Đúng <span class="text-emerald-400 font-bold">${correctEqCount}/15</span> phương trình &nbsp;|&nbsp; 
+                <strong>Phần II (Tính theo PTHH):</strong> Đúng <span class="text-emerald-400 font-bold">${correctPart2Items}/${totalPart2Items}</span> ô chọn.
+            `;
+        }
+
+        function fillSampleSolutions() {
+            equationsData.forEach((eq) => {
+                eq.ans.forEach((expectedVal, idx) => {
+                    const selectEl = document.getElementById(`eq_${eq.id}_${idx}`);
+                    selectEl.value = expectedVal;
+                    selectEl.classList.remove('correct-box', 'incorrect-box');
+                });
+            });
+
+            problemsData.forEach((prob) => {
+                const setVal = (id, val) => {
+                    const el = document.getElementById(id);
+                    if (el) {
+                        el.value = val;
+                        el.classList.remove('correct-box', 'incorrect-box');
+                    }
+                };
+
+                setVal(`b${prob.id}_n_f`, prob.molKnown.fAns);
+                setVal(`b${prob.id}_n_sub`, prob.molKnown.subAns);
+                setVal(`b${prob.id}_n_val`, prob.molKnown.valAns);
+
+                prob.stoichCols.forEach((col, idx) => {
+                    if (!col.isOp) {
+                        setVal(`b${prob.id}_coef_${idx}`, col.coefAns);
+                        setVal(`b${prob.id}_mol_${idx}`, col.molAns);
+                    }
+                });
+
+                prob.finalSteps.forEach((step) => {
+                    setVal(`b${prob.id}_${step.key}_f`, step.fAns);
+                    if (step.subOpts) {
+                        setVal(`b${prob.id}_${step.key}_sub`, step.subAns);
+                    }
+                    setVal(`b${prob.id}_${step.key}_val`, step.valAns);
+                });
+            });
+
+            const banner = document.getElementById('status-banner');
+            banner.classList.remove('hidden');
+            banner.innerHTML = `Đã điền đầy đủ hệ số cân bằng và các bước giải mẫu. Em có thể nhấn <strong>"Kiểm tra đáp án"</strong> để đối chiếu.`;
+        }
+
+        function resetWorksheet() {
+            const elements = document.querySelectorAll('input, select, textarea');
+            elements.forEach((el) => {
+                el.value = '';
+                el.classList.remove('correct-box', 'incorrect-box');
+            });
+            const banner = document.getElementById('status-banner');
+            banner.classList.add('hidden');
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            renderEquations();
+            renderProblems();
+        });
+    </script>
+</body>
+</html>
